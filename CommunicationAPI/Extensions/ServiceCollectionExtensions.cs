@@ -13,6 +13,8 @@ namespace CommunicationAPI.Extensions
         {
             services.AddScoped<ITemplateRepository, TemplateRepository>();
             services.AddScoped<ITemplateService, TemplateService>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
             return services;
         }
     }
