@@ -31,7 +31,7 @@ namespace CommunicationApp.Tests.DAL
         {
             var dbConnection = new Mock<IDbConnection>();
             var repository = new CustomerRepository(dbConnection.Object);
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.GetAllAsync());
+            await Assert.ThrowsAsync<System.Exception>(() => repository.GetAllAsync());
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace CommunicationApp.Tests.DAL
         {
             var dbConnection = new Mock<IDbConnection>();
             var repository = new CustomerRepository(dbConnection.Object);
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.GetByIdAsync(1));
+            await Assert.ThrowsAsync<System.Exception>(() => repository.GetByIdAsync(1));
         }
 
         [Fact]
@@ -47,8 +47,8 @@ namespace CommunicationApp.Tests.DAL
         {
             var dbConnection = new Mock<IDbConnection>();
             var repository = new CustomerRepository(dbConnection.Object);
-            var customer = new Customer { Name = "John", Email = "john@test.com" };
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.AddAsync(customer));
+            var customer = new Customer { Name = "Test", Email = "test@test.com" };
+            await Assert.ThrowsAsync<System.Exception>(() => repository.AddAsync(customer));
         }
 
         [Fact]
@@ -56,8 +56,8 @@ namespace CommunicationApp.Tests.DAL
         {
             var dbConnection = new Mock<IDbConnection>();
             var repository = new CustomerRepository(dbConnection.Object);
-            var customer = new Customer { Id = 1, Name = "John", Email = "john@test.com" };
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.UpdateAsync(customer));
+            var customer = new Customer { Id = 1, Name = "Test", Email = "test@test.com" };
+            await Assert.ThrowsAsync<System.Exception>(() => repository.UpdateAsync(customer));
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace CommunicationApp.Tests.DAL
         {
             var dbConnection = new Mock<IDbConnection>();
             var repository = new CustomerRepository(dbConnection.Object);
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.DeleteAsync(1));
+            await Assert.ThrowsAsync<System.Exception>(() => repository.DeleteAsync(1));
         }
     }
 } 

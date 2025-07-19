@@ -31,7 +31,7 @@ namespace CommunicationApp.Tests.DAL
         {
             var dbConnection = new Mock<IDbConnection>();
             var repository = new TemplateRepository(dbConnection.Object);
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.GetAllAsync());
+            await Assert.ThrowsAsync<System.Exception>(() => repository.GetAllAsync());
         }
 
         [Fact]
@@ -39,7 +39,7 @@ namespace CommunicationApp.Tests.DAL
         {
             var dbConnection = new Mock<IDbConnection>();
             var repository = new TemplateRepository(dbConnection.Object);
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.GetByIdAsync(1));
+            await Assert.ThrowsAsync<System.Exception>(() => repository.GetByIdAsync(1));
         }
 
         [Fact]
@@ -48,7 +48,7 @@ namespace CommunicationApp.Tests.DAL
             var dbConnection = new Mock<IDbConnection>();
             var repository = new TemplateRepository(dbConnection.Object);
             var template = new Template { Name = "Test", Subject = "Subject", Body = "Body" };
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.AddAsync(template));
+            await Assert.ThrowsAsync<System.Exception>(() => repository.AddAsync(template));
         }
 
         [Fact]
@@ -57,7 +57,7 @@ namespace CommunicationApp.Tests.DAL
             var dbConnection = new Mock<IDbConnection>();
             var repository = new TemplateRepository(dbConnection.Object);
             var template = new Template { Id = 1, Name = "Test", Subject = "Subject", Body = "Body" };
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.UpdateAsync(template));
+            await Assert.ThrowsAsync<System.Exception>(() => repository.UpdateAsync(template));
         }
 
         [Fact]
@@ -65,7 +65,7 @@ namespace CommunicationApp.Tests.DAL
         {
             var dbConnection = new Mock<IDbConnection>();
             var repository = new TemplateRepository(dbConnection.Object);
-            await Assert.ThrowsAsync<System.NullReferenceException>(() => repository.DeleteAsync(1));
+            await Assert.ThrowsAsync<System.Exception>(() => repository.DeleteAsync(1));
         }
     }
 } 

@@ -5,6 +5,7 @@ using Domain.Models;
 using BLL;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace CommunicationApp.Tests.BLL
 {
@@ -16,7 +17,8 @@ namespace CommunicationApp.Tests.BLL
             var templates = new List<Template> { new Template { Id = 1, Name = "Test", Subject = "Subject", Body = "Body" } };
             var repository = new Mock<ITemplateRepository>();
             repository.Setup(x => x.GetAllAsync()).ReturnsAsync(templates);
-            var service = new TemplateService(repository.Object);
+            var logger = new Mock<ILogger<TemplateService>>();
+            var service = new TemplateService(repository.Object, logger.Object);
 
             var result = await service.GetAllAsync();
 
@@ -30,7 +32,8 @@ namespace CommunicationApp.Tests.BLL
             var template = new Template { Id = 1, Name = "Test", Subject = "Subject", Body = "Body" };
             var repository = new Mock<ITemplateRepository>();
             repository.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(template);
-            var service = new TemplateService(repository.Object);
+            var logger = new Mock<ILogger<TemplateService>>();
+            var service = new TemplateService(repository.Object, logger.Object);
 
             var result = await service.GetByIdAsync(1);
 
@@ -44,7 +47,8 @@ namespace CommunicationApp.Tests.BLL
             var template = new Template { Name = "Test", Subject = "Subject", Body = "Body" };
             var repository = new Mock<ITemplateRepository>();
             repository.Setup(x => x.AddAsync(template)).ReturnsAsync(5);
-            var service = new TemplateService(repository.Object);
+            var logger = new Mock<ILogger<TemplateService>>();
+            var service = new TemplateService(repository.Object, logger.Object);
 
             var result = await service.AddAsync(template);
 
@@ -58,7 +62,8 @@ namespace CommunicationApp.Tests.BLL
             var template = new Template { Id = 1, Name = "Test", Subject = "Subject", Body = "Body" };
             var repository = new Mock<ITemplateRepository>();
             repository.Setup(x => x.UpdateAsync(template)).ReturnsAsync(true);
-            var service = new TemplateService(repository.Object);
+            var logger = new Mock<ILogger<TemplateService>>();
+            var service = new TemplateService(repository.Object, logger.Object);
 
             var result = await service.UpdateAsync(template);
 
@@ -71,7 +76,8 @@ namespace CommunicationApp.Tests.BLL
         {
             var repository = new Mock<ITemplateRepository>();
             repository.Setup(x => x.DeleteAsync(1)).ReturnsAsync(true);
-            var service = new TemplateService(repository.Object);
+            var logger = new Mock<ILogger<TemplateService>>();
+            var service = new TemplateService(repository.Object, logger.Object);
 
             var result = await service.DeleteAsync(1);
 

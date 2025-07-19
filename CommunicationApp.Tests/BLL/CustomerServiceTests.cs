@@ -5,6 +5,7 @@ using Domain.Models;
 using BLL;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace CommunicationApp.Tests.BLL
 {
@@ -16,7 +17,8 @@ namespace CommunicationApp.Tests.BLL
             var customers = new List<Customer> { new Customer { Id = 1, Name = "John", Email = "john@test.com" } };
             var repository = new Mock<ICustomerRepository>();
             repository.Setup(x => x.GetAllAsync()).ReturnsAsync(customers);
-            var service = new CustomerService(repository.Object);
+            var logger = new Mock<ILogger<CustomerService>>();
+            var service = new CustomerService(repository.Object, logger.Object);
 
             var result = await service.GetAllAsync();
 
@@ -30,7 +32,8 @@ namespace CommunicationApp.Tests.BLL
             var customer = new Customer { Id = 1, Name = "John", Email = "john@test.com" };
             var repository = new Mock<ICustomerRepository>();
             repository.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(customer);
-            var service = new CustomerService(repository.Object);
+            var logger = new Mock<ILogger<CustomerService>>();
+            var service = new CustomerService(repository.Object, logger.Object);
 
             var result = await service.GetByIdAsync(1);
 
@@ -44,7 +47,8 @@ namespace CommunicationApp.Tests.BLL
             var customer = new Customer { Name = "John", Email = "john@test.com" };
             var repository = new Mock<ICustomerRepository>();
             repository.Setup(x => x.AddAsync(customer)).ReturnsAsync(5);
-            var service = new CustomerService(repository.Object);
+            var logger = new Mock<ILogger<CustomerService>>();
+            var service = new CustomerService(repository.Object, logger.Object);
 
             var result = await service.AddAsync(customer);
 
@@ -58,7 +62,8 @@ namespace CommunicationApp.Tests.BLL
             var customer = new Customer { Id = 1, Name = "John", Email = "john@test.com" };
             var repository = new Mock<ICustomerRepository>();
             repository.Setup(x => x.UpdateAsync(customer)).ReturnsAsync(true);
-            var service = new CustomerService(repository.Object);
+            var logger = new Mock<ILogger<CustomerService>>();
+            var service = new CustomerService(repository.Object, logger.Object);
 
             var result = await service.UpdateAsync(customer);
 
@@ -71,7 +76,8 @@ namespace CommunicationApp.Tests.BLL
         {
             var repository = new Mock<ICustomerRepository>();
             repository.Setup(x => x.DeleteAsync(1)).ReturnsAsync(true);
-            var service = new CustomerService(repository.Object);
+            var logger = new Mock<ILogger<CustomerService>>();
+            var service = new CustomerService(repository.Object, logger.Object);
 
             var result = await service.DeleteAsync(1);
 
