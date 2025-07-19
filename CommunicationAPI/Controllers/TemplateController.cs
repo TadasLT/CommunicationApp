@@ -20,39 +20,74 @@ namespace CommunicationAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Template>>> GetAll()
         {
-            var templates = await _service.GetAllAsync();
-            return Ok(templates);
+            try
+            {
+                var templates = await _service.GetAllAsync();
+                return Ok(templates);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Template>> GetById(int id)
         {
-            var template = await _service.GetByIdAsync(id);
-            if (template == null) return NotFound();
-            return Ok(template);
+            try
+            {
+                var template = await _service.GetByIdAsync(id);
+                if (template == null) return NotFound();
+                return Ok(template);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPost]
         public async Task<ActionResult<int>> Create([FromBody] Template template)
         {
-            var id = await _service.AddAsync(template);
-            return CreatedAtAction(nameof(GetById), new { id }, id);
+            try
+            {
+                var id = await _service.AddAsync(template);
+                return CreatedAtAction(nameof(GetById), new { id }, id);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpPut()]
         public async Task<IActionResult> Update([FromBody] Template template)
         {
-            var updated = await _service.UpdateAsync(template);
-            if (!updated) return NotFound();
-            return NoContent();
+            try
+            {
+                var updated = await _service.UpdateAsync(template);
+                if (!updated) return NotFound();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var deleted = await _service.DeleteAsync(id);
-            if (!deleted) return NotFound();
-            return NoContent();
+            try
+            {
+                var deleted = await _service.DeleteAsync(id);
+                if (!deleted) return NotFound();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 } 

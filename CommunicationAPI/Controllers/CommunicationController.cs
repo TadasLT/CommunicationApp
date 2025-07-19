@@ -23,15 +23,22 @@ namespace CommunicationAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> SendMessage([FromQuery] int customerId, [FromQuery] int templateId)
         {
-            var customer = await _customerService.GetByIdAsync(customerId);
-            if (customer == null) return NotFound($"Customer {customerId} not found");
-            var template = await _templateService.GetByIdAsync(templateId);
-            if (template == null) return NotFound($"Template {templateId} not found");
+            try
+            {
+                var customer = await _customerService.GetByIdAsync(customerId);
+                if (customer == null) return NotFound($"Customer {customerId} not found");
+                var template = await _templateService.GetByIdAsync(templateId);
+                if (template == null) return NotFound($"Template {templateId} not found");
 
-            var message = string.Format(template.Body, customer.Name, customer.Email);
-            Console.WriteLine($"Sending message to {customer.Email}: {message}");
+                var message = string.Format(template.Body, customer.Name, customer.Email);
+                Console.WriteLine($"Sending message to {customer.Email}: {message}");
 
-            return Ok(new { to = customer.Email, subject = template.Subject, body = message });
+                return Ok(new { to = customer.Email, subject = template.Subject, body = message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
     }
 } 

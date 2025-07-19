@@ -13,10 +13,69 @@ namespace BLL
             _repository = repository;
         }
 
-        public Task<IEnumerable<Template>> GetAllAsync() => _repository.GetAllAsync();
-        public Task<Template?> GetByIdAsync(int id) => _repository.GetByIdAsync(id);
-        public Task<int> AddAsync(Template template) => _repository.AddAsync(template);
-        public Task<bool> UpdateAsync(Template template) => _repository.UpdateAsync(template);
-        public Task<bool> DeleteAsync(int id) => _repository.DeleteAsync(id);
+        public async Task<IEnumerable<Template>> GetAllAsync()
+        {
+            try
+            {
+                var templates = await _repository.GetAllAsync();
+                return templates;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Service error retrieving templates: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<Template?> GetByIdAsync(int id)
+        {
+            try
+            {
+                var template = await _repository.GetByIdAsync(id);
+                return template;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Service error retrieving template with ID {id}: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<int> AddAsync(Template template)
+        {
+            try
+            {
+                var id = await _repository.AddAsync(template);
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Service error adding template: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> UpdateAsync(Template template)
+        {
+            try
+            {
+                var updated = await _repository.UpdateAsync(template);
+                return updated;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Service error updating template with ID {template.Id}: {ex.Message}", ex);
+            }
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            try
+            {
+                var deleted = await _repository.DeleteAsync(id);
+                return deleted;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Service error deleting template with ID {id}: {ex.Message}", ex);
+            }
+        }
     }
 } 

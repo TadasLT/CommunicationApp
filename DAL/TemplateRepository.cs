@@ -16,35 +16,70 @@ namespace DAL
 
         public async Task<IEnumerable<Template>> GetAllAsync()
         {
-            var sql = "SELECT * FROM Templates";
-            return await _dbConnection.QueryAsync<Template>(sql);
+            try
+            {
+                var sql = "SELECT * FROM Templates";
+                return await _dbConnection.QueryAsync<Template>(sql);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving templates: {ex.Message}", ex);
+            }
         }
 
         public async Task<Template?> GetByIdAsync(int id)
         {
-            var sql = "SELECT * FROM Templates WHERE Id = @Id";
-            return await _dbConnection.QueryFirstOrDefaultAsync<Template>(sql, new { Id = id });
+            try
+            {
+                var sql = "SELECT * FROM Templates WHERE Id = @Id";
+                return await _dbConnection.QueryFirstOrDefaultAsync<Template>(sql, new { Id = id });
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error retrieving template with ID {id}: {ex.Message}", ex);
+            }
         }
 
         public async Task<int> AddAsync(Template template)
         {
-            var sql = @"INSERT INTO Templates (Name, Subject, Body) VALUES (@Name, @Subject, @Body); SELECT CAST(SCOPE_IDENTITY() as int);";
-            var id = await _dbConnection.QuerySingleAsync<int>(sql, template);
-            return id;
+            try
+            {
+                var sql = @"INSERT INTO Templates (Name, Subject, Body) VALUES (@Name, @Subject, @Body); SELECT CAST(SCOPE_IDENTITY() as int);";
+                var id = await _dbConnection.QuerySingleAsync<int>(sql, template);
+                return id;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error adding template: {ex.Message}", ex);
+            }
         }
 
         public async Task<bool> UpdateAsync(Template template)
         {
-            var sql = "UPDATE Templates SET Name = @Name, Subject = @Subject, Body = @Body WHERE Id = @Id";
-            var affected = await _dbConnection.ExecuteAsync(sql, template);
-            return affected > 0;
+            try
+            {
+                var sql = "UPDATE Templates SET Name = @Name, Subject = @Subject, Body = @Body WHERE Id = @Id";
+                var affected = await _dbConnection.ExecuteAsync(sql, template);
+                return affected > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error updating template with ID {template.Id}: {ex.Message}", ex);
+            }
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            var sql = "DELETE FROM Templates WHERE Id = @Id";
-            var affected = await _dbConnection.ExecuteAsync(sql, new { Id = id });
-            return affected > 0;
+            try
+            {
+                var sql = "DELETE FROM Templates WHERE Id = @Id";
+                var affected = await _dbConnection.ExecuteAsync(sql, new { Id = id });
+                return affected > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error deleting template with ID {id}: {ex.Message}", ex);
+            }
         }
     }
 } 
