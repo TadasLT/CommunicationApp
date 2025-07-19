@@ -4,6 +4,7 @@ using Domain.Interfaces.BLL;
 using Domain.Models;
 using CommunicationAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -14,10 +15,11 @@ namespace CommunicationApp.Tests.CommunicationAPI
         [Fact]
         public async Task GetAll_ReturnsOk_WithCustomers()
         {
-            var customers = new List<Customer> { new Customer { Id = 1, Name = "A", Email = "a@a.com" } };
+            var customers = new List<Customer> { new Customer { Id = 1, Name = "John", Email = "john@test.com" } };
             var service = new Mock<ICustomerService>();
             service.Setup(x => x.GetAllAsync()).ReturnsAsync(customers);
-            var controller = new CustomerController(service.Object);
+            var logger = new Mock<ILogger<CustomerController>>();
+            var controller = new CustomerController(service.Object, logger.Object);
             var result = await controller.GetAll();
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var value = Assert.IsAssignableFrom<IEnumerable<Customer>>(okResult.Value);
@@ -27,10 +29,11 @@ namespace CommunicationApp.Tests.CommunicationAPI
         [Fact]
         public async Task GetById_ReturnsOk_WhenFound()
         {
-            var customer = new Customer { Id = 1, Name = "A", Email = "a@a.com" };
+            var customer = new Customer { Id = 1, Name = "John", Email = "john@test.com" };
             var service = new Mock<ICustomerService>();
             service.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(customer);
-            var controller = new CustomerController(service.Object);
+            var logger = new Mock<ILogger<CustomerController>>();
+            var controller = new CustomerController(service.Object, logger.Object);
             var result = await controller.GetById(1);
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var value = Assert.IsType<Customer>(okResult.Value);
@@ -42,7 +45,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ICustomerService>();
             service.Setup(x => x.GetByIdAsync(1)).ReturnsAsync((Customer)null);
-            var controller = new CustomerController(service.Object);
+            var logger = new Mock<ILogger<CustomerController>>();
+            var controller = new CustomerController(service.Object, logger.Object);
             var result = await controller.GetById(1);
             Assert.IsType<NotFoundResult>(result.Result);
         }
@@ -52,8 +56,9 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ICustomerService>();
             service.Setup(x => x.AddAsync(It.IsAny<Customer>())).ReturnsAsync(5);
-            var controller = new CustomerController(service.Object);
-            var customer = new Customer { Name = "A", Email = "a@a.com" };
+            var logger = new Mock<ILogger<CustomerController>>();
+            var controller = new CustomerController(service.Object, logger.Object);
+            var customer = new Customer { Name = "John", Email = "john@test.com" };
             var result = await controller.Create(customer);
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
             Assert.Equal(5, createdResult.Value);
@@ -64,8 +69,9 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ICustomerService>();
             service.Setup(x => x.UpdateAsync(It.IsAny<Customer>())).ReturnsAsync(true);
-            var controller = new CustomerController(service.Object);
-            var customer = new Customer { Id = 1, Name = "A", Email = "a@a.com" };
+            var logger = new Mock<ILogger<CustomerController>>();
+            var controller = new CustomerController(service.Object, logger.Object);
+            var customer = new Customer { Id = 1, Name = "John", Email = "john@test.com" };
             var result = await controller.Update(customer);
             Assert.IsType<NoContentResult>(result);
         }
@@ -75,8 +81,9 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ICustomerService>();
             service.Setup(x => x.UpdateAsync(It.IsAny<Customer>())).ReturnsAsync(false);
-            var controller = new CustomerController(service.Object);
-            var customer = new Customer { Id = 1, Name = "A", Email = "a@a.com" };
+            var logger = new Mock<ILogger<CustomerController>>();
+            var controller = new CustomerController(service.Object, logger.Object);
+            var customer = new Customer { Id = 1, Name = "John", Email = "john@test.com" };
             var result = await controller.Update(customer);
             Assert.IsType<NotFoundResult>(result);
         }
@@ -86,7 +93,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ICustomerService>();
             service.Setup(x => x.DeleteAsync(1)).ReturnsAsync(true);
-            var controller = new CustomerController(service.Object);
+            var logger = new Mock<ILogger<CustomerController>>();
+            var controller = new CustomerController(service.Object, logger.Object);
             var result = await controller.Delete(1);
             Assert.IsType<NoContentResult>(result);
         }
@@ -96,7 +104,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ICustomerService>();
             service.Setup(x => x.DeleteAsync(1)).ReturnsAsync(false);
-            var controller = new CustomerController(service.Object);
+            var logger = new Mock<ILogger<CustomerController>>();
+            var controller = new CustomerController(service.Object, logger.Object);
             var result = await controller.Delete(1);
             Assert.IsType<NotFoundResult>(result);
         }

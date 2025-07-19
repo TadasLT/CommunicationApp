@@ -4,6 +4,7 @@ using Domain.Interfaces.BLL;
 using Domain.Models;
 using CommunicationAPI.Controllers;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CommunicationApp.Tests.CommunicationAPI
 {
@@ -15,7 +16,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
             var templates = new List<Template> { new Template { Id = 1, Name = "T", Subject = "S", Body = "B" } };
             var service = new Mock<ITemplateService>();
             service.Setup(x => x.GetAllAsync()).ReturnsAsync(templates);
-            var controller = new TemplateController(service.Object);
+            var logger = new Mock<ILogger<TemplateController>>();
+            var controller = new TemplateController(service.Object, logger.Object);
             var result = await controller.GetAll();
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var value = Assert.IsAssignableFrom<IEnumerable<Template>>(okResult.Value);
@@ -28,7 +30,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
             var template = new Template { Id = 1, Name = "T", Subject = "S", Body = "B" };
             var service = new Mock<ITemplateService>();
             service.Setup(x => x.GetByIdAsync(1)).ReturnsAsync(template);
-            var controller = new TemplateController(service.Object);
+            var logger = new Mock<ILogger<TemplateController>>();
+            var controller = new TemplateController(service.Object, logger.Object);
             var result = await controller.GetById(1);
             var okResult = Assert.IsType<OkObjectResult>(result.Result);
             var value = Assert.IsType<Template>(okResult.Value);
@@ -40,7 +43,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ITemplateService>();
             service.Setup(x => x.GetByIdAsync(1)).ReturnsAsync((Template)null);
-            var controller = new TemplateController(service.Object);
+            var logger = new Mock<ILogger<TemplateController>>();
+            var controller = new TemplateController(service.Object, logger.Object);
             var result = await controller.GetById(1);
             Assert.IsType<NotFoundResult>(result.Result);
         }
@@ -50,7 +54,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ITemplateService>();
             service.Setup(x => x.AddAsync(It.IsAny<Template>())).ReturnsAsync(5);
-            var controller = new TemplateController(service.Object);
+            var logger = new Mock<ILogger<TemplateController>>();
+            var controller = new TemplateController(service.Object, logger.Object);
             var template = new Template { Name = "T", Subject = "S", Body = "B" };
             var result = await controller.Create(template);
             var createdResult = Assert.IsType<CreatedAtActionResult>(result.Result);
@@ -62,7 +67,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ITemplateService>();
             service.Setup(x => x.UpdateAsync(It.IsAny<Template>())).ReturnsAsync(true);
-            var controller = new TemplateController(service.Object);
+            var logger = new Mock<ILogger<TemplateController>>();
+            var controller = new TemplateController(service.Object, logger.Object);
             var template = new Template { Id = 1, Name = "T", Subject = "S", Body = "B" };
             var result = await controller.Update(template);
             Assert.IsType<NoContentResult>(result);
@@ -73,7 +79,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ITemplateService>();
             service.Setup(x => x.UpdateAsync(It.IsAny<Template>())).ReturnsAsync(false);
-            var controller = new TemplateController(service.Object);
+            var logger = new Mock<ILogger<TemplateController>>();
+            var controller = new TemplateController(service.Object, logger.Object);
             var template = new Template { Id = 1, Name = "T", Subject = "S", Body = "B" };
             var result = await controller.Update(template);
             Assert.IsType<NotFoundResult>(result);
@@ -84,7 +91,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ITemplateService>();
             service.Setup(x => x.DeleteAsync(1)).ReturnsAsync(true);
-            var controller = new TemplateController(service.Object);
+            var logger = new Mock<ILogger<TemplateController>>();
+            var controller = new TemplateController(service.Object, logger.Object);
             var result = await controller.Delete(1);
             Assert.IsType<NoContentResult>(result);
         }
@@ -94,7 +102,8 @@ namespace CommunicationApp.Tests.CommunicationAPI
         {
             var service = new Mock<ITemplateService>();
             service.Setup(x => x.DeleteAsync(1)).ReturnsAsync(false);
-            var controller = new TemplateController(service.Object);
+            var logger = new Mock<ILogger<TemplateController>>();
+            var controller = new TemplateController(service.Object, logger.Object);
             var result = await controller.Delete(1);
             Assert.IsType<NotFoundResult>(result);
         }

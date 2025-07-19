@@ -5,6 +5,7 @@ using Domain.Models;
 using DAL;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 
 namespace CommunicationApp.Tests.DAL
 {
@@ -14,7 +15,8 @@ namespace CommunicationApp.Tests.DAL
         public void Constructor_AcceptsDbConnection()
         {
             var dbConnection = new Mock<IDbConnection>();
-            var repository = new CustomerRepository(dbConnection.Object);
+            var logger = new Mock<ILogger<CustomerRepository>>();
+            var repository = new CustomerRepository(dbConnection.Object, logger.Object);
             Assert.NotNull(repository);
         }
 
@@ -22,7 +24,8 @@ namespace CommunicationApp.Tests.DAL
         public void Constructor_StoresDbConnection()
         {
             var dbConnection = new Mock<IDbConnection>();
-            var repository = new CustomerRepository(dbConnection.Object);
+            var logger = new Mock<ILogger<CustomerRepository>>();
+            var repository = new CustomerRepository(dbConnection.Object, logger.Object);
             Assert.NotNull(repository);
         }
 
@@ -30,7 +33,8 @@ namespace CommunicationApp.Tests.DAL
         public async Task GetAllAsync_CallsRepositoryMethod()
         {
             var dbConnection = new Mock<IDbConnection>();
-            var repository = new CustomerRepository(dbConnection.Object);
+            var logger = new Mock<ILogger<CustomerRepository>>();
+            var repository = new CustomerRepository(dbConnection.Object, logger.Object);
             await Assert.ThrowsAsync<System.Exception>(() => repository.GetAllAsync());
         }
 
@@ -38,7 +42,8 @@ namespace CommunicationApp.Tests.DAL
         public async Task GetByIdAsync_CallsRepositoryMethod()
         {
             var dbConnection = new Mock<IDbConnection>();
-            var repository = new CustomerRepository(dbConnection.Object);
+            var logger = new Mock<ILogger<CustomerRepository>>();
+            var repository = new CustomerRepository(dbConnection.Object, logger.Object);
             await Assert.ThrowsAsync<System.Exception>(() => repository.GetByIdAsync(1));
         }
 
@@ -46,7 +51,8 @@ namespace CommunicationApp.Tests.DAL
         public async Task AddAsync_CallsRepositoryMethod()
         {
             var dbConnection = new Mock<IDbConnection>();
-            var repository = new CustomerRepository(dbConnection.Object);
+            var logger = new Mock<ILogger<CustomerRepository>>();
+            var repository = new CustomerRepository(dbConnection.Object, logger.Object);
             var customer = new Customer { Name = "Test", Email = "test@test.com" };
             await Assert.ThrowsAsync<System.Exception>(() => repository.AddAsync(customer));
         }
@@ -55,7 +61,8 @@ namespace CommunicationApp.Tests.DAL
         public async Task UpdateAsync_CallsRepositoryMethod()
         {
             var dbConnection = new Mock<IDbConnection>();
-            var repository = new CustomerRepository(dbConnection.Object);
+            var logger = new Mock<ILogger<CustomerRepository>>();
+            var repository = new CustomerRepository(dbConnection.Object, logger.Object);
             var customer = new Customer { Id = 1, Name = "Test", Email = "test@test.com" };
             await Assert.ThrowsAsync<System.Exception>(() => repository.UpdateAsync(customer));
         }
@@ -64,7 +71,8 @@ namespace CommunicationApp.Tests.DAL
         public async Task DeleteAsync_CallsRepositoryMethod()
         {
             var dbConnection = new Mock<IDbConnection>();
-            var repository = new CustomerRepository(dbConnection.Object);
+            var logger = new Mock<ILogger<CustomerRepository>>();
+            var repository = new CustomerRepository(dbConnection.Object, logger.Object);
             await Assert.ThrowsAsync<System.Exception>(() => repository.DeleteAsync(1));
         }
     }
