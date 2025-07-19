@@ -1,11 +1,13 @@
 using Domain.Models;
 using Domain.Interfaces.BLL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CommunicationAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [Authorize]
     public class TemplateController : ControllerBase
     {
         private readonly ITemplateService _service;

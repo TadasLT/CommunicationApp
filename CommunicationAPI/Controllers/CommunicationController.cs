@@ -1,12 +1,14 @@
 using Domain.Models;
 using Domain.Interfaces.BLL;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 
 namespace CommunicationAPI.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [Authorize]
     public class CommunicationController : ControllerBase
     {
         private readonly ICustomerService _customerService;
