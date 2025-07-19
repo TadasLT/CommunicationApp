@@ -43,6 +43,7 @@ namespace CommunicationAPI.Controllers
             try
             {
                 _logger.LogInformation("API: Retrieving customer with ID {CustomerId}", id);
+                
                 var customer = await _service.GetByIdAsync(id);
                 if (customer == null)
                 {
@@ -65,6 +66,7 @@ namespace CommunicationAPI.Controllers
             try
             {
                 _logger.LogInformation("API: Creating new customer with name: {Name}", customer.Name);
+                
                 var id = await _service.AddAsync(customer);
                 _logger.LogInformation("API: Successfully created customer with ID {CustomerId}", id);
                 return CreatedAtAction(nameof(GetById), new { id }, id);
@@ -82,6 +84,7 @@ namespace CommunicationAPI.Controllers
             try
             {
                 _logger.LogInformation("API: Updating customer with ID {CustomerId}", customer.Id);
+                
                 var updated = await _service.UpdateAsync(customer);
                 if (!updated)
                 {
@@ -104,6 +107,7 @@ namespace CommunicationAPI.Controllers
             try
             {
                 _logger.LogInformation("API: Deleting customer with ID {CustomerId}", id);
+                
                 var deleted = await _service.DeleteAsync(id);
                 if (!deleted)
                 {

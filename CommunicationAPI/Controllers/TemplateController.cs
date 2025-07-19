@@ -43,6 +43,7 @@ namespace CommunicationAPI.Controllers
             try
             {
                 _logger.LogInformation("API: Retrieving template with ID {TemplateId}", id);
+                
                 var template = await _service.GetByIdAsync(id);
                 if (template == null)
                 {
@@ -65,6 +66,7 @@ namespace CommunicationAPI.Controllers
             try
             {
                 _logger.LogInformation("API: Creating new template with subject: {Subject}", template.Subject);
+                
                 var id = await _service.AddAsync(template);
                 _logger.LogInformation("API: Successfully created template with ID {TemplateId}", id);
                 return CreatedAtAction(nameof(GetById), new { id }, id);
@@ -82,6 +84,7 @@ namespace CommunicationAPI.Controllers
             try
             {
                 _logger.LogInformation("API: Updating template with ID {TemplateId}", template.Id);
+                
                 var updated = await _service.UpdateAsync(template);
                 if (!updated)
                 {
@@ -104,6 +107,7 @@ namespace CommunicationAPI.Controllers
             try
             {
                 _logger.LogInformation("API: Deleting template with ID {TemplateId}", id);
+                
                 var deleted = await _service.DeleteAsync(id);
                 if (!deleted)
                 {
