@@ -93,7 +93,7 @@ Update JWT settings in `CommunicationAPI/appsettings.json`:
 
 ## Database Setup
 
-Naudoti prisegta duomenu bazes backupa
+Use database backup from email: CommunicationDb.bak
 
 ## Running the Application
 ### Access Swagger Documentation
